@@ -1,0 +1,4 @@
+Flask: 2.2.5, python-dotenv, supabase,
+pip install pyjwt
+pip install gensim
+pip install Flask-CORS  
