@@ -62,13 +62,17 @@ def find_word_vector_code(listCode):
     return checked
 
 def get_suggest_product(listCode):
+    print(listCode)
     supabase_client = get_supabase()
     response = []
-    for code in listCode:
-        result = supabase_client.table("Product").select('*').eq("code", code).eq("deleted", 0).execute()
-        if len(result.data) > 0:
-            response.append(result.data)
-    
+    code_index_map = {code: index for index, code in enumerate(listCode)}
+
+    result = supabase_client.table("Product").select('*').in_("code", listCode).eq("deleted", 0).execute()
+    data = result.data
+
+    sorted_data = sorted(data, key=lambda x: code_index_map[x['code']])
+    response.extend(sorted_data)
+
     return response
 
 def get_brand_product(code):
